@@ -50,7 +50,8 @@ export default function Register() {
               type="text"
               placeholder="First Name"
               className="peer"
-              onChange={(e) => setDisplayName(e.target.value)}
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
               required
             />
           </div>
@@ -66,9 +67,20 @@ export default function Register() {
           </div>
           <div className="relative z-0 w-full mb-6 group">
             <input
+              type="text"
+              placeholder="Display Name"
+              className="peer"
+              value={displayName}
+              onChange={(e) => setDisplayName(e.target.value)}
+              required
+            />
+          </div>
+          <div className="relative z-0 w-full mb-6 group">
+            <input
               type="email"
               placeholder="Email"
               className="peer"
+              value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
             />
@@ -78,6 +90,7 @@ export default function Register() {
               type="password"
               placeholder="Password"
               className="peer"
+              value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
             />
@@ -93,6 +106,12 @@ export default function Register() {
             <GoogleIcon color="currentColor" />
             Continue with Google
           </button>
+          <p className="mt-4 text-center">
+            Already have an account?{" "}
+            <Link to="/login" className="text-red-main hover:underline">
+              Login
+            </Link>
+          </p>
         </form>
       </div>
     </div>
