@@ -6,8 +6,10 @@ import {
   signOut,
   onAuthStateChanged,
   updateProfile,
+  sendPasswordResetEmail, // Add this import
 } from "firebase/auth";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { toast } from "react-toastify"; // Make sure you have this installed
 
 const AuthContext = createContext();
 
@@ -25,11 +27,8 @@ export function AuthContextProvider({ children }) {
       
       await updateProfile(auth.currentUser, {
         displayName: displayName,
-        // You can add other profile fields here
       });
       
-      // Store additional user data in your database here if needed
-      // For now, we'll just add it to the currentUser state
       setCurrentUser({ 
         ...user, 
         displayName,
@@ -62,6 +61,17 @@ export function AuthContextProvider({ children }) {
     return signOut(auth);
   }
 
+  const forgotPassword = async (email) => {
+    try {
+      await sendPasswordResetEmail(auth, email);
+      toast.warn('Password reset email sent');
+      return true; // Return true to indicate success
+    } catch (err) {
+      toast.error(err.message);
+      throw err; // Re-throw the error for handling in components
+    }
+  };
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setCurrentUser(user);
@@ -76,6 +86,7 @@ export function AuthContextProvider({ children }) {
     logIn,
     logOut,
     signUpProvider: signUpWithGoogle,
+    forgotPassword, // Add the new function to the context value
   };
 
   return (
